@@ -1,0 +1,12 @@
+FROM python:3.6-alpine
+
+COPY . /api
+WORKDIR /api
+
+RUN apk add gcc libc-dev linux-headers
+RUN pip install --upgrade pip
+RUN pip install uwsgi
+RUN pip install -r requirements.txt
+RUN apk del gcc libc-dev linux-headers
+
+ENTRYPOINT ["uwsgi", "--ini", "/api/uwsgi.ini"]

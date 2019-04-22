@@ -9,3 +9,21 @@ services:
         ports:
             - "5672:5672"
             - "15672:15672"
+    worker:
+        build:
+            context: celery-queue
+            dockerfile: dockerfile
+        depends_on:
+            - rabbit
+    server:
+        container_name: flask-celery
+        build:
+            context: ./api
+            dockerfile: dockerfile
+        ports:
+            - '5000:5000'
+        restart: always
+        environment:
+            ENV: DEVELOPMENT
+        depends_on:
+            - rabbit

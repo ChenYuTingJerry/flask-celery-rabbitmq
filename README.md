@@ -14,3 +14,9 @@ celery worker -A celery_worker.celery --loglevel=info --pool=eventlet
 ```unix
 celery worker -A celery_worker.celery --loglevel=info
 ```
+
+### Docker-Compose
+
+```unix
+docker-compose up --build
+```
