@@ -9,7 +9,13 @@ services:
         ports:
             - "5672:5672"
             - "15672:15672"
-    worker:
+    worker_1:
+        build:
+            context: celery-queue
+            dockerfile: dockerfile
+        depends_on:
+            - rabbit
+    worker_2:
         build:
             context: celery-queue
             dockerfile: dockerfile
@@ -25,5 +31,14 @@ services:
         restart: always
         environment:
             ENV: DEVELOPMENT
+        depends_on:
+            - rabbit
+    flower:
+        image: mher/flower
+        environment:
+            - CELERY_BROKER_URL=amqp://admin:mypass@rabbit
+            - FLOWER_PORT=5555
+        ports:
+            - 5555:5555
         depends_on:
             - rabbit
